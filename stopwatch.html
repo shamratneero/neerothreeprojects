@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3s stopwatch</title>
+  <style>
+    
+    :root {
+      --bg: #f4f6fb;
+      --card: #ffffff;
+      --text: #0f1724;
+      --muted: #6b7280;
+      --accent: #4f46e5;
+      --radius: 12px;
+      --shadow: 0 8px 24px rgba(15,23,36,0.08);
+    }
+
+    body {
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      width: 360px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 18px;
+      margin: 0 0 18px 0;
+      font-weight: 600;
+    }
+
+    #display {
+      font-size: 48px;
+      margin: 14px 0 20px 0;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    button {
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(15,23,36,0.06);
+    }
+
+    button#startBtn { background: var(--accent); color: white; }
+    button#stopBtn { background: #ef4444; color: white; }
+    button#resetBtn { background: #e6e9f8; color: var(--text); }
+
+    button:active { transform: translateY(1px); }
+    .note { color: var(--muted); font-size: 13px; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Stopwatch</h1>
+
+    <div id="display">0 s</div>
+
+    <div class="controls">
+      <button id="startBtn">Start</button>
+      <button id="stopBtn">Stop</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+
+    
+  </div>
+
+  <script>
+    
+    let time = 0;
+    let timer = null;
+
+    let display = document.getElementById('display');
+    let startBtn = document.getElementById('startBtn');
+    let stopBtn = document.getElementById('stopBtn');
+    let resetBtn = document.getElementById('resetBtn');
+
+   
+    function show() {
+      display.textContent = time + ' s';
+    }
+
+   
+    function startTimer() {
+      
+      if (timer !== null || time >= 30) return;
+
+      timer = setInterval(function() {
+        time = time + 3;
+        if (time > 30) time = 30; // clamp
+        show();
+
+        if (time >= 30) {
+          clearInterval(timer);
+          timer = null;
+        }
+      }, 3000);
+    }
+
+    
+    function stopTimer() {
+      if (timer !== null) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+  
+    function resetTimer() {
+      if (timer !== null) {
+        clearInterval(timer);
+        timer = null;
+      }
+      time = 0;
+      show();
+    }
+
+  
+    startBtn.addEventListener('click', startTimer);
+    stopBtn.addEventListener('click', stopTimer);
+    resetBtn.addEventListener('click', resetTimer);
+
+  
+    show();
+  </script>
+</body>
+</html>
